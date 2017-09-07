@@ -2,8 +2,8 @@
 
 from distutils.core import setup
 
-setup(name='MapRoulette',
-      version='3.0',
+setup(name='maproulette',
+      version='3.0.0 beta 1',
       description='MapRoulette, OpenStreetMap micro-tasking',
       author='Martijn van Exel',
       author_email='m@rtijn.org',

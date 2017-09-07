@@ -1,8 +1,7 @@
 """The Task model."""
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
 from geoalchemy2 import Geometry
-Base = declarative_base()
+from maproulette.db import Base
 
 
 class Task(Base):
