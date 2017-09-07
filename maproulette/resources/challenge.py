@@ -1,30 +1,28 @@
-"""Defines the Task resource."""
+"""Defines the Challenge resource."""
 
 from flask_restful import Resource, abort, fields, marshal_with
-from models import Task
-from db import session
-from utils import GeoJSONField
+from maproulette.models import Challenge
+from maproulette.db import session
 
-task_fields = {
+challenge_fields = {
     'id': fields.Integer,
-    'challenge_id': fields.Integer,
-    'osm_id': fields.Integer,
     'assigned_id': fields.Integer,
+    'title': fields.String,
+    'description': fields.String,
     'instruction': fields.String,
-    'geometry': GeoJSONField()
 }
 
 
-class TaskResource(Resource):
-    """The Task Resource."""
+class ChallengeResource(Resource):
+    """The Challenge Resource."""
 
-    @marshal_with(task_fields)
+    @marshal_with(challenge_fields)
     def get(self, id):
         """HTTP GET."""
-        task = session.query(Task).filter(Task.id == id).first()
-        if not task:
+        challenge = session.query(Challenge).filter(Challenge.id == id).first()
+        if not challenge:
             abort(404, message="Task {} doesn't exist".format(id))
-        return task
+        return challenge
 
     def put(self):
         """HTTP PUT."""

@@ -2,7 +2,7 @@
 
 from flask_restful import fields
 import json
-from db import session
+from maproulette.db import session
 from geoalchemy2 import functions
 
 
@@ -18,9 +18,8 @@ class GeoJSONField(fields.Raw):
 
 def load_fixtures():
     """Load some fixture data into the database."""
-    from models import Task, Challenge, User
+    from maproulette.models import Task, Challenge, User
     from random import randrange, random
-    from app import session
 
     # Create a user
     u = User()

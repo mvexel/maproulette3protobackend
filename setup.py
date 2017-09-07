@@ -8,5 +8,5 @@ setup(name='MapRoulette',
       author='Martijn van Exel',
       author_email='m@rtijn.org',
       url='https://maproulette.org/',
-      packages=['maproulette3'],
+      packages=['maproulette'],
       )
