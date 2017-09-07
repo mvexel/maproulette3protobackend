@@ -2,13 +2,13 @@
 
 from flask import Flask
 from flask_restful import Api
-from maproulette3.resources.task import Task
-from maproulette3.resources.challenge import Challenge
-
+from maproulette3.resources.task import TaskResource
+from maproulette3.resources.challenge import ChallengeResource
 
 app = Flask(__name__)
 
 
+# Initialize application
 @app.route('/')
 def index():
     """Show something for the site root."""
@@ -16,8 +16,9 @@ def index():
 
 api = Api(app)
 
-api.add_resource(Task, '/task', '/task/<string:id>')
-api.add_resource(Challenge, '/challenge', '/challenge/<string:id>')
+# Add resource endpoints
+api.add_resource(TaskResource, '/task', '/task/<string:id>')
+api.add_resource(ChallengeResource, '/challenge', '/challenge/<string:id>')
 
 if __name__ == "__main__":
     app.run()

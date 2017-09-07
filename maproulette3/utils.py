@@ -1,30 +1,38 @@
 """MapRoulette Utility functions."""
 
+from flask_restful import fields
+import json
+from db import session
+from geoalchemy2 import functions
+
+
+class GeoJSONField(fields.Raw):
+    """GeoJSON output definition for geometry field."""
+
+    def format(self, value):
+        """Reformat WKT input as GeoJSON."""
+        return json.loads(
+            session.scalar(
+                functions.ST_AsGeoJSON(value)))
+
 
 def load_fixtures():
     """Load some fixture data into the database."""
     from models import Task, Challenge, User
-    from sqlalchemy.orm import sessionmaker
-    from sqlalchemy import create_engine
-    from settings import DB_URI
     from random import randrange, random
-
-    # Set up the SQLAlchemy session
-    engine = create_engine(DB_URI)
-    session = sessionmaker(bind=engine)
-    s = session()
+    from app import session
 
     # Create a user
     u = User()
     u.osm_id = 8909
     u.osm_username = 'mvexel'
-    s.add(u)
+    session.add(u)
 
     for x in range(1, 11):
         c = Challenge()
         c.name = "Challenge {}".format(x)
         c.instruction = "Challenge {} Instruction".format(x)
-        s.add(c)
+        session.add(c)
 
     for x in range(1, 10000):
         t = Task()
@@ -32,7 +40,6 @@ def load_fixtures():
         t.geometry = 'POINT({lon} {lat})'.format(
             lon=random() * 360 - 180,
             lat=random() * 180 - 90)
-        s.add(t)
+        session.add(t)
 
-    s.commit()
-    s.close()
+    session.commit()

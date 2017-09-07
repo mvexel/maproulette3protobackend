@@ -1,14 +1,30 @@
 """Defines the Task resource."""
 
-from flask_restful import Resource
+from flask_restful import Resource, abort, fields, marshal_with
+from models import Task
+from db import session
+from utils import GeoJSONField
+
+task_fields = {
+    'id': fields.Integer,
+    'challenge_id': fields.Integer,
+    'osm_id': fields.Integer,
+    'assigned_id': fields.Integer,
+    'instruction': fields.String,
+    'geometry': GeoJSONField()
+}
 
 
-class Task(Resource):
+class TaskResource(Resource):
     """The Task Resource."""
 
-    def get(self):
+    @marshal_with(task_fields)
+    def get(self, id):
         """HTTP GET."""
-        pass
+        task = session.query(Task).filter(Task.id == id).first()
+        if not task:
+            abort(404, message="Task {} doesn't exist".format(id))
+        return task
 
     def put(self):
         """HTTP PUT."""
